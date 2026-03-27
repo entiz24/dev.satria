@@ -53,16 +53,16 @@ const TransactionsPage = () => {
   return (
     <div data-testid="transactions-page">
       <div className="mb-8">
-        <h1 className="text-4xl font-black uppercase tracking-tight mb-2" style={{ fontFamily: "'Cabinet Grotesk', sans-serif" }}>
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-2">
           Transactions
         </h1>
-        <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">
+        <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-muted-foreground">
           Real-time Transaction Monitoring
         </p>
       </div>
 
       {/* Filters */}
-      <Card className="mb-6 p-6 border-2 border-[#0A0A0A] rounded-none">
+      <Card className="mb-6 p-6 border border-white/10 bg-card">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
             <div className="relative">
@@ -71,7 +71,7 @@ const TransactionsPage = () => {
                 placeholder="Search transactions..."
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
-                className="pl-10 rounded-none border-2"
+                className="pl-10 bg-white/5 border-white/10 focus:border-primary text-foreground"
                 data-testid="search-transactions-input"
               />
             </div>
@@ -79,7 +79,7 @@ const TransactionsPage = () => {
           <Button
             onClick={() => setShowFlagged(!showFlagged)}
             variant={showFlagged ? 'default' : 'outline'}
-            className="rounded-none border-2 font-bold uppercase"
+            className="font-semibold uppercase"
             data-testid="filter-flagged-button"
           >
             {showFlagged ? 'Show All' : 'Show Flagged Only'}
@@ -88,73 +88,73 @@ const TransactionsPage = () => {
       </Card>
 
       {/* Transactions Table */}
-      <div className="border-2 border-[#0A0A0A]">
+      <div className="border border-white/10 rounded-md overflow-hidden bg-card">
         <div className="overflow-x-auto">
           <table className="w-full" data-testid="transactions-table">
-            <thead className="bg-[#0A0A0A] text-white">
+            <thead className="bg-primary/10 border-b border-white/10">
               <tr>
-                <th className="text-left p-4 text-xs font-bold uppercase tracking-wide">ID</th>
-                <th className="text-left p-4 text-xs font-bold uppercase tracking-wide">Type</th>
-                <th className="text-left p-4 text-xs font-bold uppercase tracking-wide">From</th>
-                <th className="text-left p-4 text-xs font-bold uppercase tracking-wide">To</th>
-                <th className="text-right p-4 text-xs font-bold uppercase tracking-wide">Amount</th>
-                <th className="text-left p-4 text-xs font-bold uppercase tracking-wide">Risk</th>
-                <th className="text-left p-4 text-xs font-bold uppercase tracking-wide">Date</th>
-                <th className="text-center p-4 text-xs font-bold uppercase tracking-wide">Action</th>
+                <th className="text-left p-4 text-xs font-semibold uppercase tracking-wide text-foreground">ID</th>
+                <th className="text-left p-4 text-xs font-semibold uppercase tracking-wide text-foreground">Type</th>
+                <th className="text-left p-4 text-xs font-semibold uppercase tracking-wide text-foreground">From</th>
+                <th className="text-left p-4 text-xs font-semibold uppercase tracking-wide text-foreground">To</th>
+                <th className="text-right p-4 text-xs font-semibold uppercase tracking-wide text-foreground">Amount</th>
+                <th className="text-left p-4 text-xs font-semibold uppercase tracking-wide text-foreground">Risk</th>
+                <th className="text-left p-4 text-xs font-semibold uppercase tracking-wide text-foreground">Date</th>
+                <th className="text-center p-4 text-xs font-semibold uppercase tracking-wide text-foreground">Action</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
                   <td colSpan={8} className="text-center p-8">
-                    <p className="text-sm font-mono">Loading...</p>
+                    <p className="text-sm font-mono text-muted-foreground">Loading...</p>
                   </td>
                 </tr>
               ) : filteredTransactions.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="text-center p-8">
-                    <p className="text-sm font-mono">Tidak ada transaksi ditemukan</p>
+                    <p className="text-sm font-mono text-muted-foreground">Tidak ada transaksi ditemukan</p>
                   </td>
                 </tr>
               ) : (
                 filteredTransactions.slice(0, 50).map((tx, idx) => (
-                  <tr key={tx.id} className={`border-b border-[#E5E5E5] ${idx % 2 === 0 ? 'bg-white' : 'bg-[#F7F7F7]'}`} data-testid={`transaction-row-${idx}`}>
+                  <tr key={tx.id} className={`border-b border-white/5 hover:bg-white/5 transition-colors ${idx % 2 === 0 ? 'bg-transparent' : 'bg-white/[0.02]'}`} data-testid={`transaction-row-${idx}`}>
                     <td className="p-4">
-                      <code className="text-xs font-mono">{tx.id.substring(0, 8)}</code>
+                      <code className="text-xs font-mono text-foreground">{tx.id.substring(0, 8)}</code>
                     </td>
                     <td className="p-4">
-                      <span className="text-xs uppercase font-bold">{tx.transaction_type}</span>
+                      <span className="text-xs uppercase font-bold text-foreground">{tx.transaction_type}</span>
                     </td>
                     <td className="p-4">
-                      <p className="text-sm font-semibold">{tx.sender_name}</p>
+                      <p className="text-sm font-semibold text-foreground">{tx.sender_name}</p>
                     </td>
                     <td className="p-4">
-                      <p className="text-sm font-semibold">{tx.receiver_name}</p>
+                      <p className="text-sm font-semibold text-foreground">{tx.receiver_name}</p>
                     </td>
                     <td className="p-4 text-right">
-                      <p className="text-sm font-mono font-bold">{formatCurrency(tx.amount)}</p>
+                      <p className="text-sm font-mono font-bold text-foreground">{formatCurrency(tx.amount)}</p>
                     </td>
                     <td className="p-4">
                       {tx.risk_score ? (
                         <div>
-                          <Badge className={`${getRiskLevelColor(tx.risk_level)} rounded-none`}>
+                          <Badge className={`${getRiskLevelColor(tx.risk_level)}`}>
                             {tx.risk_level}
                           </Badge>
-                          <p className="text-xs font-mono mt-1">{tx.risk_score.toFixed(1)}</p>
+                          <p className="text-xs font-mono mt-1 text-muted-foreground">{tx.risk_score.toFixed(1)}</p>
                         </div>
                       ) : (
                         <span className="text-xs text-muted-foreground">Not analyzed</span>
                       )}
                     </td>
                     <td className="p-4">
-                      <p className="text-xs">{new Date(tx.timestamp).toLocaleString('id-ID')}</p>
+                      <p className="text-xs text-muted-foreground">{new Date(tx.timestamp).toLocaleString('id-ID')}</p>
                     </td>
                     <td className="p-4 text-center">
                       <Button
                         size="sm"
                         onClick={() => handleAnalyze(tx.id)}
                         disabled={analyzing === tx.id}
-                        className="rounded-none bg-[#002FA7] hover:bg-[#0A0A0A] text-xs"
+                        className="bg-primary hover:bg-primary/90 text-xs"
                         data-testid={`analyze-button-${idx}`}
                       >
                         {analyzing === tx.id ? (
