@@ -68,32 +68,32 @@ const LTKMPage = () => {
 
   return (
     <div data-testid="ltkm-page">
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-black uppercase tracking-tight mb-2" style={{ fontFamily: "'Cabinet Grotesk', sans-serif" }}>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-2">
             LTKM Reports
           </h1>
-          <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">
+          <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-muted-foreground">
             Suspicious Transaction Reports
           </p>
         </div>
 
         <Dialog open={showGenerateDialog} onOpenChange={setShowGenerateDialog}>
           <DialogTrigger asChild>
-            <Button className="rounded-none bg-[#002FA7] hover:bg-[#0A0A0A] font-bold uppercase" data-testid="generate-ltkm-button">
+            <Button className="bg-primary hover:bg-primary/90 font-semibold uppercase" data-testid="generate-ltkm-button">
               <Plus className="h-4 w-4 mr-2" />
               Generate LTKM
             </Button>
           </DialogTrigger>
-          <DialogContent className="rounded-none border-2 border-[#0A0A0A]">
+          <DialogContent className="bg-card border border-white/10">
             <DialogHeader>
-              <DialogTitle className="text-xl font-bold uppercase">Generate LTKM Report</DialogTitle>
+              <DialogTitle className="text-xl font-semibold uppercase text-foreground">Generate LTKM Report</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <label className="text-sm font-bold uppercase block mb-2">Select Entity</label>
+                <label className="text-sm font-semibold uppercase block mb-2 text-foreground">Select Entity</label>
                 <Select value={selectedEntity} onValueChange={setSelectedEntity}>
-                  <SelectTrigger className="rounded-none border-2" data-testid="entity-select">
+                  <SelectTrigger className="bg-white/5 border-white/10 text-foreground" data-testid="entity-select">
                     <SelectValue placeholder="Choose entity..." />
                   </SelectTrigger>
                   <SelectContent>
@@ -108,7 +108,7 @@ const LTKMPage = () => {
               <Button
                 onClick={handleGenerateReport}
                 disabled={generating || !selectedEntity}
-                className="w-full rounded-none bg-[#002FA7] font-bold uppercase"
+                className="w-full bg-primary hover:bg-primary/90 font-semibold uppercase"
                 data-testid="confirm-generate-button"
               >
                 {generating ? 'Generating...' : 'Generate Report'}
@@ -122,52 +122,52 @@ const LTKMPage = () => {
       <div className="space-y-4">
         {loading ? (
           <div className="text-center p-8">
-            <p className="text-sm font-mono">Loading...</p>
+            <p className="text-sm font-mono text-muted-foreground">Loading...</p>
           </div>
         ) : reports.length === 0 ? (
-          <Card className="p-8 text-center border-2 border-[#0A0A0A] rounded-none">
+          <Card className="p-8 text-center bg-card border border-white/10">
             <FileText className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-            <p className="text-sm font-mono">Belum ada LTKM report</p>
+            <p className="text-sm font-mono text-muted-foreground">Belum ada LTKM report</p>
           </Card>
         ) : (
           reports.map((report, idx) => (
-            <Card key={report.id} className="p-6 border-2 border-[#0A0A0A] rounded-none" data-testid={`ltkm-report-${idx}`}>
-              <div className="flex items-start justify-between">
+            <Card key={report.id} className="p-6 bg-card border border-white/10 hover:border-primary/50 transition-all" data-testid={`ltkm-report-${idx}`}>
+              <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-3">
-                    <code className="text-sm font-mono font-bold bg-[#F7F7F7] px-3 py-1 border-2 border-[#0A0A0A]">
+                  <div className="flex items-center gap-3 mb-3 flex-wrap">
+                    <code className="text-sm font-mono font-semibold bg-white/5 border border-white/10 px-3 py-1 rounded text-foreground">
                       {report.report_number}
                     </code>
-                    <Badge className={`${getRiskLevelColor(report.report_data?.risk_level)} rounded-none`}>
+                    <Badge className={`${getRiskLevelColor(report.report_data?.risk_level)}`}>
                       {report.report_data?.risk_level || 'N/A'}
                     </Badge>
-                    <Badge className={`${report.submitted ? 'bg-[#2A9D8F]' : 'bg-gray-400'} text-white rounded-none`}>
+                    <Badge className={`${report.submitted ? 'bg-green-500/10 text-green-500 border border-green-500/20' : 'bg-white/5 text-muted-foreground border border-white/10'}`}>
                       {report.submitted ? 'SUBMITTED' : 'DRAFT'}
                     </Badge>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                     <div>
-                      <p className="text-xs uppercase tracking-wide text-muted-foreground font-bold mb-1">
+                      <p className="text-xs uppercase tracking-wide text-muted-foreground font-semibold mb-1">
                         Risk Score
                       </p>
-                      <p className="text-2xl font-black font-mono">{report.risk_score.toFixed(2)}</p>
+                      <p className="text-2xl font-black font-mono text-foreground">{report.risk_score.toFixed(2)}</p>
                     </div>
                     <div>
-                      <p className="text-xs uppercase tracking-wide text-muted-foreground font-bold mb-1">
+                      <p className="text-xs uppercase tracking-wide text-muted-foreground font-semibold mb-1">
                         Transactions
                       </p>
-                      <p className="text-2xl font-black font-mono">{report.transaction_ids.length}</p>
+                      <p className="text-2xl font-black font-mono text-foreground">{report.transaction_ids.length}</p>
                     </div>
                   </div>
 
                   <div className="mb-4">
-                    <p className="text-xs uppercase tracking-wide text-muted-foreground font-bold mb-2">
+                    <p className="text-xs uppercase tracking-wide text-muted-foreground font-semibold mb-2">
                       Suspicious Indicators
                     </p>
                     <div className="space-y-1">
                       {report.suspicious_indicators.slice(0, 3).map((indicator, i) => (
-                        <p key={i} className="text-xs bg-[#F7F7F7] p-2 border-l-4 border-[#E63946]">
+                        <p key={i} className="text-xs bg-white/5 border-l-2 border-red-500/50 p-2 text-muted-foreground">
                           {indicator}
                         </p>
                       ))}
@@ -181,7 +181,7 @@ const LTKMPage = () => {
 
                 <Button
                   onClick={() => handleDownloadPDF(report.id, report.report_number)}
-                  className="rounded-none bg-[#0A0A0A] hover:bg-[#002FA7] font-bold uppercase"
+                  className="bg-primary hover:bg-primary/90 font-semibold uppercase shrink-0"
                   data-testid={`download-pdf-${idx}`}
                 >
                   <Download className="h-4 w-4 mr-2" />

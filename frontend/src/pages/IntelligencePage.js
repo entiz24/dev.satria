@@ -31,21 +31,21 @@ const IntelligencePage = () => {
   return (
     <div data-testid="intelligence-page">
       <div className="mb-8">
-        <h1 className="text-4xl font-black uppercase tracking-tight mb-2" style={{ fontFamily: "'Cabinet Grotesk', sans-serif" }}>
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-2">
           Intelligence Fusion
         </h1>
-        <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">
+        <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-muted-foreground">
           Cyber-Financial Intelligence Center
         </p>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#E5E5E5] border-2 border-[#0A0A0A] mb-8">
-        <Card className="bg-white p-6 border-0 rounded-none" data-testid="cyber-intel-widget">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6 mb-8">
+        <Card className="bg-card p-6 border border-white/10" data-testid="cyber-intel-widget">
           <div className="flex items-center gap-3 mb-4">
-            <Shield className="h-8 w-8 text-[#002FA7]" />
+            <Shield className="h-8 w-8 text-cyan-500" />
             <div>
-              <h2 className="text-xl font-bold uppercase tracking-tight">
+              <h2 className="text-xl font-semibold tracking-tight text-foreground">
                 Cyber Threat Intelligence
               </h2>
               <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
@@ -53,17 +53,17 @@ const IntelligencePage = () => {
               </p>
             </div>
           </div>
-          <p className="text-4xl font-black font-mono">{cyberThreats.length}</p>
+          <p className="text-4xl font-black font-mono text-foreground">{cyberThreats.length}</p>
           <p className="text-xs uppercase tracking-wide text-muted-foreground mt-2">
             Active Threats
           </p>
         </Card>
 
-        <Card className="bg-white p-6 border-0 rounded-none" data-testid="financial-intel-widget">
+        <Card className="bg-card p-6 border border-white/10" data-testid="financial-intel-widget">
           <div className="flex items-center gap-3 mb-4">
-            <Activity className="h-8 w-8 text-[#002FA7]" />
+            <Activity className="h-8 w-8 text-primary" />
             <div>
-              <h2 className="text-xl font-bold uppercase tracking-tight">
+              <h2 className="text-xl font-semibold tracking-tight text-foreground">
                 Financial Intelligence
               </h2>
               <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
@@ -71,7 +71,7 @@ const IntelligencePage = () => {
               </p>
             </div>
           </div>
-          <p className="text-4xl font-black font-mono">{financialThreats.length}</p>
+          <p className="text-4xl font-black font-mono text-foreground">{financialThreats.length}</p>
           <p className="text-xs uppercase tracking-wide text-muted-foreground mt-2">
             ML/TF Indicators
           </p>
@@ -82,31 +82,31 @@ const IntelligencePage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Cyber Threats */}
         <div>
-          <h3 className="text-xl font-bold uppercase tracking-tight mb-4">
+          <h3 className="text-xl font-semibold tracking-tight text-foreground mb-4">
             Cyber Threats (BSSN)
           </h3>
           <div className="space-y-4">
             {cyberThreats.length === 0 ? (
-              <Card className="p-6 border-2 border-[#0A0A0A] rounded-none text-center">
-                <p className="text-sm font-mono">No cyber threats</p>
+              <Card className="p-6 bg-card border border-white/10 text-center">
+                <p className="text-sm font-mono text-muted-foreground">No cyber threats</p>
               </Card>
             ) : (
               cyberThreats.map((threat, idx) => (
-                <Card key={threat.id} className="p-6 border-2 border-[#0A0A0A] rounded-none" data-testid={`cyber-threat-${idx}`}>
+                <Card key={threat.id} className="p-6 bg-card border border-white/10 hover:border-primary/50 transition-all" data-testid={`cyber-threat-${idx}`}>
                   <div className="flex items-start justify-between mb-3">
-                    <Badge className={`${getRiskLevelColor(threat.severity)} rounded-none`}>
+                    <Badge className={`${getRiskLevelColor(threat.severity)}`}>
                       {threat.severity}
                     </Badge>
-                    <span className="text-xs uppercase tracking-wide font-bold text-muted-foreground">
+                    <span className="text-xs uppercase tracking-wide font-semibold text-muted-foreground">
                       {threat.source}
                     </span>
                   </div>
-                  <h4 className="text-lg font-bold mb-2">{threat.title}</h4>
+                  <h4 className="text-lg font-semibold mb-2 text-foreground">{threat.title}</h4>
                   <p className="text-sm text-muted-foreground mb-3">{threat.description}</p>
                   {threat.indicators.length > 0 && (
                     <div className="flex flex-wrap gap-2">
                       {threat.indicators.map((indicator, i) => (
-                        <span key={i} className="text-xs font-mono bg-[#F7F7F7] px-2 py-1">
+                        <span key={i} className="text-xs font-mono bg-white/5 border border-white/10 px-2 py-1 rounded text-muted-foreground">
                           {indicator}
                         </span>
                       ))}
@@ -120,31 +120,31 @@ const IntelligencePage = () => {
 
         {/* Financial Threats */}
         <div>
-          <h3 className="text-xl font-bold uppercase tracking-tight mb-4">
+          <h3 className="text-xl font-semibold tracking-tight text-foreground mb-4">
             Financial Intelligence (PPATK)
           </h3>
           <div className="space-y-4">
             {financialThreats.length === 0 ? (
-              <Card className="p-6 border-2 border-[#0A0A0A] rounded-none text-center">
-                <p className="text-sm font-mono">No financial threats</p>
+              <Card className="p-6 bg-card border border-white/10 text-center">
+                <p className="text-sm font-mono text-muted-foreground">No financial threats</p>
               </Card>
             ) : (
               financialThreats.map((threat, idx) => (
-                <Card key={threat.id} className="p-6 border-2 border-[#0A0A0A] rounded-none" data-testid={`financial-threat-${idx}`}>
+                <Card key={threat.id} className="p-6 bg-card border border-white/10 hover:border-primary/50 transition-all" data-testid={`financial-threat-${idx}`}>
                   <div className="flex items-start justify-between mb-3">
-                    <Badge className={`${getRiskLevelColor(threat.severity)} rounded-none`}>
+                    <Badge className={`${getRiskLevelColor(threat.severity)}`}>
                       {threat.severity}
                     </Badge>
-                    <span className="text-xs uppercase tracking-wide font-bold text-muted-foreground">
+                    <span className="text-xs uppercase tracking-wide font-semibold text-muted-foreground">
                       {threat.source}
                     </span>
                   </div>
-                  <h4 className="text-lg font-bold mb-2">{threat.title}</h4>
+                  <h4 className="text-lg font-semibold mb-2 text-foreground">{threat.title}</h4>
                   <p className="text-sm text-muted-foreground mb-3">{threat.description}</p>
                   {threat.indicators.length > 0 && (
                     <div className="flex flex-wrap gap-2">
                       {threat.indicators.map((indicator, i) => (
-                        <span key={i} className="text-xs font-mono bg-[#F7F7F7] px-2 py-1">
+                        <span key={i} className="text-xs font-mono bg-white/5 border border-white/10 px-2 py-1 rounded text-muted-foreground">
                           {indicator}
                         </span>
                       ))}

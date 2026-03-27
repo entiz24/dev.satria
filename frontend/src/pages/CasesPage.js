@@ -61,52 +61,52 @@ const CasesPage = () => {
 
   return (
     <div data-testid="cases-page">
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-black uppercase tracking-tight mb-2" style={{ fontFamily: "'Cabinet Grotesk', sans-serif" }}>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-2">
             Case Management
           </h1>
-          <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">
+          <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-muted-foreground">
             Investigation Workflow System
           </p>
         </div>
 
         <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
           <DialogTrigger asChild>
-            <Button className="rounded-none bg-[#002FA7] hover:bg-[#0A0A0A] font-bold uppercase" data-testid="create-case-button">
+            <Button className="bg-primary hover:bg-primary/90 font-semibold uppercase" data-testid="create-case-button">
               <Plus className="h-4 w-4 mr-2" />
               New Case
             </Button>
           </DialogTrigger>
-          <DialogContent className="rounded-none border-2 border-[#0A0A0A]">
+          <DialogContent className="bg-card border border-white/10">
             <DialogHeader>
-              <DialogTitle className="text-xl font-bold uppercase">Create New Case</DialogTitle>
+              <DialogTitle className="text-xl font-semibold uppercase text-foreground">Create New Case</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleCreateCase} className="space-y-4">
               <div>
-                <label className="text-sm font-bold uppercase block mb-2">Title</label>
+                <label className="text-sm font-semibold uppercase block mb-2 text-foreground">Title</label>
                 <Input
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   required
-                  className="rounded-none border-2"
+                  className="bg-white/5 border-white/10 focus:border-primary text-foreground"
                   data-testid="case-title-input"
                 />
               </div>
               <div>
-                <label className="text-sm font-bold uppercase block mb-2">Description</label>
+                <label className="text-sm font-semibold uppercase block mb-2 text-foreground">Description</label>
                 <Textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   required
-                  className="rounded-none border-2 min-h-[100px]"
+                  className="bg-white/5 border-white/10 focus:border-primary text-foreground min-h-[100px]"
                   data-testid="case-description-input"
                 />
               </div>
               <div>
-                <label className="text-sm font-bold uppercase block mb-2">Priority</label>
+                <label className="text-sm font-semibold uppercase block mb-2 text-foreground">Priority</label>
                 <Select value={formData.priority} onValueChange={(value) => setFormData({ ...formData, priority: value })}>
-                  <SelectTrigger className="rounded-none border-2" data-testid="case-priority-select">
+                  <SelectTrigger className="bg-white/5 border-white/10 text-foreground" data-testid="case-priority-select">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -117,7 +117,7 @@ const CasesPage = () => {
                   </SelectContent>
                 </Select>
               </div>
-              <Button type="submit" className="w-full rounded-none bg-[#002FA7] font-bold uppercase" data-testid="submit-case-button">
+              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 font-semibold uppercase" data-testid="submit-case-button">
                 Create Case
               </Button>
             </form>
@@ -129,30 +129,30 @@ const CasesPage = () => {
       <div className="space-y-4">
         {loading ? (
           <div className="text-center p-8">
-            <p className="text-sm font-mono">Loading...</p>
+            <p className="text-sm font-mono text-muted-foreground">Loading...</p>
           </div>
         ) : cases.length === 0 ? (
-          <Card className="p-8 text-center border-2 border-[#0A0A0A] rounded-none">
+          <Card className="p-8 text-center bg-card border border-white/10">
             <Briefcase className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-            <p className="text-sm font-mono">Tidak ada cases ditemukan</p>
+            <p className="text-sm font-mono text-muted-foreground">Tidak ada cases ditemukan</p>
           </Card>
         ) : (
           cases.map((caseItem, idx) => (
-            <Card key={caseItem.id} className="p-6 border-2 border-[#0A0A0A] rounded-none" data-testid={`case-card-${idx}`}>
+            <Card key={caseItem.id} className="p-6 bg-card border border-white/10 hover:border-primary/50 transition-all" data-testid={`case-card-${idx}`}>
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <code className="text-xs font-mono font-bold bg-[#F7F7F7] px-2 py-1">
+                  <div className="flex items-center gap-3 mb-2 flex-wrap">
+                    <code className="text-xs font-mono font-semibold bg-white/5 border border-white/10 px-2 py-1 rounded text-foreground">
                       {caseItem.case_number}
                     </code>
-                    <Badge className={`${getRiskLevelColor(caseItem.priority)} rounded-none`}>
+                    <Badge className={`${getRiskLevelColor(caseItem.priority)}`}>
                       {caseItem.priority}
                     </Badge>
-                    <Badge className="bg-[#0A0A0A] text-white rounded-none">
+                    <Badge className="bg-white/5 text-foreground border border-white/10">
                       {caseItem.status}
                     </Badge>
                   </div>
-                  <h3 className="text-xl font-bold mb-2">{caseItem.title}</h3>
+                  <h3 className="text-xl font-semibold mb-2 text-foreground">{caseItem.title}</h3>
                   <p className="text-sm text-muted-foreground mb-4">{caseItem.description}</p>
                   <p className="text-xs uppercase tracking-wide text-muted-foreground">
                     Created {formatDate(caseItem.created_at)}
@@ -160,12 +160,12 @@ const CasesPage = () => {
                 </div>
               </div>
 
-              <div className="flex gap-2">
+              <div className="flex gap-2 flex-wrap">
                 {caseItem.status === 'open' && (
                   <Button
                     size="sm"
                     onClick={() => handleUpdateStatus(caseItem.id, 'investigating')}
-                    className="rounded-none bg-[#002FA7] text-xs font-bold uppercase"
+                    className="bg-primary hover:bg-primary/90 text-xs font-semibold uppercase"
                     data-testid={`start-investigation-${idx}`}
                   >
                     Start Investigation
@@ -176,7 +176,7 @@ const CasesPage = () => {
                     <Button
                       size="sm"
                       onClick={() => handleUpdateStatus(caseItem.id, 'pending_review')}
-                      className="rounded-none bg-[#FFB703] text-black text-xs font-bold uppercase"
+                      className="bg-yellow-500/20 text-yellow-500 border border-yellow-500/30 hover:bg-yellow-500/30 text-xs font-semibold uppercase"
                       data-testid={`pending-review-${idx}`}
                     >
                       Pending Review
@@ -184,7 +184,7 @@ const CasesPage = () => {
                     <Button
                       size="sm"
                       onClick={() => handleUpdateStatus(caseItem.id, 'closed')}
-                      className="rounded-none bg-[#2A9D8F] text-white text-xs font-bold uppercase"
+                      className="bg-green-500/20 text-green-500 border border-green-500/30 hover:bg-green-500/30 text-xs font-semibold uppercase"
                       data-testid={`close-case-${idx}`}
                     >
                       Close Case

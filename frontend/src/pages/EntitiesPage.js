@@ -32,6 +32,7 @@ const EntitiesPage = () => {
     try {
       const response = await entitiesAPI.getNetworkGraph();
       setGraphData(response.data);
+      toast.success('Network graph loaded');
     } catch (error) {
       toast.error('Gagal memuat network graph');
     }
@@ -46,18 +47,18 @@ const EntitiesPage = () => {
 
   return (
     <div data-testid="entities-page">
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-black uppercase tracking-tight mb-2" style={{ fontFamily: "'Cabinet Grotesk', sans-serif" }}>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-2">
             Entities
           </h1>
-          <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">
+          <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-muted-foreground">
             Entity Registry & Network Analysis
           </p>
         </div>
         <Button
           onClick={loadNetworkGraph}
-          className="rounded-none bg-[#002FA7] hover:bg-[#0A0A0A] font-bold uppercase"
+          className="bg-primary hover:bg-primary/90 font-semibold uppercase"
           data-testid="load-graph-button"
         >
           <Network className="h-4 w-4 mr-2" />
@@ -66,53 +67,53 @@ const EntitiesPage = () => {
       </div>
 
       {/* Entity Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#E5E5E5] border-2 border-[#0A0A0A]">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {loading ? (
-          <div className="col-span-full p-8 bg-white text-center">
-            <p className="text-sm font-mono">Loading...</p>
+          <div className="col-span-full p-8 text-center">
+            <p className="text-sm font-mono text-muted-foreground">Loading...</p>
           </div>
         ) : entities.length === 0 ? (
-          <div className="col-span-full p-8 bg-white text-center">
-            <p className="text-sm font-mono">Tidak ada entitas ditemukan</p>
+          <div className="col-span-full p-8 text-center">
+            <p className="text-sm font-mono text-muted-foreground">Tidak ada entitas ditemukan</p>
           </div>
         ) : (
           entities.slice(0, 30).map((entity, idx) => (
-            <Card key={entity.id} className="bg-white p-6 border-0 rounded-none" data-testid={`entity-card-${idx}`}>
+            <Card key={entity.id} className="bg-card border border-white/10 p-6 hover:border-primary/50 transition-all" data-testid={`entity-card-${idx}`}>
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
                     {entity.entity_type === 'company' ? (
-                      <Building2 className="h-4 w-4 text-[#002FA7]" />
+                      <Building2 className="h-4 w-4 text-primary" />
                     ) : (
-                      <Users className="h-4 w-4 text-[#002FA7]" />
+                      <Users className="h-4 w-4 text-primary" />
                     )}
-                    <span className="text-xs uppercase font-bold tracking-wide">
+                    <span className="text-xs uppercase font-semibold tracking-wide text-muted-foreground">
                       {entity.entity_type}
                     </span>
                   </div>
-                  <h3 className="text-lg font-bold mb-1">{entity.name}</h3>
+                  <h3 className="text-lg font-bold mb-1 text-foreground">{entity.name}</h3>
                   <p className="text-xs font-mono text-muted-foreground">{entity.identifier}</p>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <div className="flex items-center justify-between p-2 bg-[#F7F7F7]">
-                  <span className="text-xs uppercase font-bold">Risk Score</span>
-                  <Badge className={`${getRiskLevelColor(getRiskLevel(entity.risk_score))} rounded-none text-xs`}>
+                <div className="flex items-center justify-between p-3 bg-white/5 rounded-md">
+                  <span className="text-xs uppercase font-semibold text-muted-foreground">Risk Score</span>
+                  <Badge className={`${getRiskLevelColor(getRiskLevel(entity.risk_score))} text-xs`}>
                     {entity.risk_score.toFixed(1)}
                   </Badge>
                 </div>
 
-                <div className="flex items-center justify-between p-2 bg-[#F7F7F7]">
-                  <span className="text-xs uppercase font-bold">KYC</span>
-                  <span className={`px-2 py-1 text-xs font-bold ${entity.kyc_verified ? 'bg-[#2A9D8F] text-white' : 'bg-gray-300 text-black'}`}>
+                <div className="flex items-center justify-between p-3 bg-white/5 rounded-md">
+                  <span className="text-xs uppercase font-semibold text-muted-foreground">KYC</span>
+                  <span className={`px-2 py-1 text-xs font-semibold rounded ${entity.kyc_verified ? 'bg-green-500/10 text-green-500 border border-green-500/20' : 'bg-white/5 text-muted-foreground border border-white/10'}`}>
                     {entity.kyc_verified ? 'Verified' : 'Unverified'}
                   </span>
                 </div>
 
                 {entity.watchlist_match && (
-                  <div className="p-2 bg-[#E63946] text-white">
-                    <p className="text-xs font-bold uppercase">⚠ Watchlist Match</p>
+                  <div className="p-3 bg-red-500/10 text-red-500 border border-red-500/20 rounded-md">
+                    <p className="text-xs font-semibold uppercase">⚠ Watchlist Match</p>
                   </div>
                 )}
               </div>
@@ -123,28 +124,28 @@ const EntitiesPage = () => {
 
       {/* Graph Analysis */}
       {graphData && (
-        <Card className="mt-8 p-6 border-2 border-[#0A0A0A] rounded-none" data-testid="graph-analysis-card">
-          <h2 className="text-xl font-bold uppercase tracking-tight mb-4">
+        <Card className="mt-8 p-6 bg-card border border-white/10" data-testid="graph-analysis-card">
+          <h2 className="text-xl font-semibold tracking-tight text-foreground mb-4">
             Graph Neural Network Analysis
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-4 bg-[#F7F7F7]">
-              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-bold mb-2">
+            <div className="p-4 bg-white/5 rounded-md">
+              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-2">
                 Nodes (Entities)
               </p>
-              <p className="text-3xl font-black font-mono">{graphData.analysis.node_count}</p>
+              <p className="text-3xl font-black font-mono text-foreground">{graphData.analysis.node_count}</p>
             </div>
-            <div className="p-4 bg-[#F7F7F7]">
-              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-bold mb-2">
+            <div className="p-4 bg-white/5 rounded-md">
+              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-2">
                 Edges (Relationships)
               </p>
-              <p className="text-3xl font-black font-mono">{graphData.analysis.edge_count}</p>
+              <p className="text-3xl font-black font-mono text-foreground">{graphData.analysis.edge_count}</p>
             </div>
-            <div className="p-4 bg-[#F7F7F7]">
-              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-bold mb-2">
+            <div className="p-4 bg-white/5 rounded-md">
+              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-2">
                 Suspicious Patterns
               </p>
-              <p className="text-3xl font-black font-mono">{graphData.analysis.suspicious_patterns?.length || 0}</p>
+              <p className="text-3xl font-black font-mono text-foreground">{graphData.analysis.suspicious_patterns?.length || 0}</p>
             </div>
           </div>
         </Card>
