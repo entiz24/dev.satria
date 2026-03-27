@@ -1,15 +1,15 @@
 export const getRiskLevelColor = (level) => {
   switch (level?.toLowerCase()) {
     case 'critical':
-      return 'bg-[#E63946] text-white';
+      return 'bg-red-500/10 text-red-500 border border-red-500/20';
     case 'high':
-      return 'bg-[#FFB703] text-black';
+      return 'bg-red-500/10 text-red-500 border border-red-500/20';
     case 'medium':
-      return 'bg-[#0A0A0A] text-white';
+      return 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20';
     case 'low':
-      return 'bg-[#2A9D8F] text-white';
+      return 'bg-green-500/10 text-green-500 border border-green-500/20';
     default:
-      return 'bg-gray-200 text-black';
+      return 'bg-white/5 text-muted-foreground border border-white/10';
   }
 };
 

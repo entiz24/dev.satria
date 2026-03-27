@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import url('https://fonts.cdnfonts.com/css/cabinet-grotesk');
 
 @tailwind base;
@@ -16,33 +16,37 @@ code {
     font-family: 'JetBrains Mono', source-code-pro, Menlo, Monaco, Consolas, monospace;
 }
 
+h1, h2, h3 {
+    font-family: 'Cabinet Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
 @layer base {
     :root {
-        --background: 0 0% 100%;
-        --foreground: 0 0% 4%;
-        --card: 0 0% 100%;
-        --card-foreground: 0 0% 4%;
-        --popover: 0 0% 100%;
-        --popover-foreground: 0 0% 4%;
-        --primary: 216 100% 33%;
+        --background: 226 60% 10%;
+        --foreground: 0 0% 100%;
+        --card: 225 53% 15%;
+        --card-foreground: 0 0% 100%;
+        --popover: 225 53% 15%;
+        --popover-foreground: 0 0% 100%;
+        --primary: 217 91% 60%;
         --primary-foreground: 0 0% 100%;
-        --secondary: 0 0% 4%;
+        --secondary: 225 40% 25%;
         --secondary-foreground: 0 0% 100%;
-        --muted: 0 0% 45%;
-        --muted-foreground: 0 0% 45%;
-        --accent: 0 0% 97%;
-        --accent-foreground: 0 0% 4%;
-        --destructive: 354 70% 59%;
+        --muted: 225 40% 25%;
+        --muted-foreground: 215 20% 65%;
+        --accent: 217 91% 60%;
+        --accent-foreground: 0 0% 100%;
+        --destructive: 348 83% 47%;
         --destructive-foreground: 0 0% 100%;
-        --border: 0 0% 90%;
-        --input: 0 0% 89.8%;
-        --ring: 0 0% 4%;
-        --chart-1: 216 100% 33%;
-        --chart-2: 46 100% 51%;
-        --chart-3: 173 56% 38%;
-        --chart-4: 354 70% 59%;
-        --chart-5: 0 0% 45%;
-        --radius: 0rem;
+        --border: 225 40% 25%;
+        --input: 225 40% 25%;
+        --ring: 217 91% 60%;
+        --chart-1: 217 91% 60%;
+        --chart-2: 188 86% 53%;
+        --chart-3: 38 92% 50%;
+        --chart-4: 348 83% 47%;
+        --chart-5: 152 69% 31%;
+        --radius: 0.375rem;
     }
 }
 

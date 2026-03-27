@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Card } from './ui/card';
 import { toast } from 'sonner';
+import { Shield } from 'lucide-react';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -29,47 +30,54 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white" style={{
-      backgroundImage: 'url(https://images.pexels.com/photos/3137073/pexels-photo-3137073.jpeg)',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center'
-    }}>
-      <div className="absolute inset-0 bg-white/90" />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A1128] via-[#0F1A3D] to-[#1a2847] relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/7630006/pexels-photo-7630006.jpeg')] bg-cover bg-center opacity-5" />
+      <div className="absolute inset-0">
+        <div className="absolute top-0 -left-4 w-72 h-72 bg-primary/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob" />
+        <div className="absolute top-0 -right-4 w-72 h-72 bg-accent/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-primary/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000" />
+      </div>
       
-      <Card className="relative z-10 w-full max-w-md p-8 border-2 border-[#0A0A0A] rounded-none" data-testid="login-card">
+      <Card className="relative z-10 w-full max-w-md mx-4 p-8 bg-card/95 backdrop-blur-xl border border-white/10 shadow-2xl" data-testid="login-card">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-black uppercase tracking-tight" style={{ fontFamily: "'Cabinet Grotesk', sans-serif" }}>
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 border border-primary/30 mb-4">
+            <Shield className="h-8 w-8 text-primary" />
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-2">
             SATRIA
           </h1>
-          <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mt-2">
+          <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-muted-foreground">
             Financial Intelligence System
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="text-sm font-bold uppercase tracking-wide block mb-2">
+            <label className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground block mb-2">
               Email
             </label>
             <Input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="rounded-none border-2 focus:ring-2 focus:ring-black"
+              className="bg-white/5 border-white/10 focus:border-primary focus:ring-1 focus:ring-primary text-foreground"
+              placeholder="user@satria.go.id"
               required
               data-testid="login-email-input"
             />
           </div>
 
           <div>
-            <label className="text-sm font-bold uppercase tracking-wide block mb-2">
+            <label className="text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground block mb-2">
               Password
             </label>
             <Input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="rounded-none border-2 focus:ring-2 focus:ring-black"
+              className="bg-white/5 border-white/10 focus:border-primary focus:ring-1 focus:ring-primary text-foreground"
+              placeholder="••••••••"
               required
               data-testid="login-password-input"
             />
@@ -77,7 +85,7 @@ const Login = () => {
 
           <Button
             type="submit"
-            className="w-full rounded-none bg-[#002FA7] hover:bg-white hover:text-[#002FA7] hover:border-2 hover:border-[#002FA7] font-bold uppercase tracking-wide transition-all duration-75"
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold transition-all duration-200"
             disabled={loading}
             data-testid="login-submit-button"
           >
@@ -85,10 +93,18 @@ const Login = () => {
           </Button>
         </form>
 
-        <div className="mt-6 p-4 bg-[#F7F7F7] border border-[#E5E5E5]">
-          <p className="text-xs font-bold uppercase tracking-wide mb-2">Test Accounts:</p>
-          <p className="text-xs font-mono">admin@satria.go.id / Admin123!</p>
-          <p className="text-xs font-mono">analyst@satria.go.id / Analyst123!</p>
+        <div className="mt-8 p-4 bg-white/5 border border-white/10 rounded-md">
+          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3">Test Accounts:</p>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-muted-foreground">Admin:</span>
+              <code className="font-mono text-foreground">admin@satria.go.id</code>
+            </div>
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-muted-foreground">Password:</span>
+              <code className="font-mono text-foreground">Admin123!</code>
+            </div>
+          </div>
         </div>
       </Card>
     </div>
