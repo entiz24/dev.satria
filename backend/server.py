@@ -146,10 +146,11 @@ async def get_dashboard_stats(current_user: User = Depends(get_current_user_from
     
     # Calculate average risk score
     pipeline = [
-        {"$group": {"_id": None, "avg_risk": {"$avg": "$risk_score"}}}
+        {"$group": {"_id": None, "avg_risk": {"$avg": "$overall_score"}}}
     ]
     avg_result = await db.risk_scores.aggregate(pipeline).to_list(1)
-    avg_risk_score = avg_result[0]['avg_risk'] if avg_result else 0
+    avg_risk_score = avg_result[0]['avg_risk'] if avg_result and avg_result[0].get('avg_risk') else 0.0
+    avg_risk_score = float(avg_risk_score) if avg_risk_score else 0.0
     
     # Transactions today
     today_start = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)

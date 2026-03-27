@@ -22,8 +22,10 @@ const Dashboard = () => {
       ]);
       setStats(statsRes.data);
       setAlerts(alertsRes.data);
+      console.log('Dashboard data loaded:', statsRes.data);
     } catch (error) {
-      toast.error('Gagal memuat data dashboard');
+      console.error('Dashboard error:', error);
+      toast.error('Gagal memuat data dashboard: ' + (error.response?.data?.detail || error.message));
     } finally {
       setLoading(false);
     }

@@ -41,14 +41,18 @@ const Login = () => {
       
       <Card className="relative z-10 w-full max-w-md mx-4 p-8 bg-card/95 backdrop-blur-xl border border-white/10 shadow-2xl" data-testid="login-card">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 border border-primary/30 mb-4">
-            <Shield className="h-8 w-8 text-primary" />
+          <div className="inline-flex items-center justify-center mb-4 bg-white/5 p-4 rounded-lg">
+            <img 
+              src="/satria-logo.jpeg" 
+              alt="SATRIA Logo" 
+              className="h-28 w-28 object-contain"
+            />
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-2">
             SATRIA
           </h1>
           <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-muted-foreground">
-            Financial Intelligence System
+            Sistem Analitik Transaksi dan Intelijen Anti Pencucian Uang
           </p>
         </div>
 

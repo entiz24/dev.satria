@@ -82,24 +82,33 @@ const DashboardLayout = ({ children }) => {
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-72 bg-card border-white/10 p-6">
-                <div className="mb-8">
-                  <h2 className="text-2xl font-bold text-foreground">SATRIA</h2>
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Intelligence</p>
+                <div className="mb-8 flex items-center gap-3">
+                  <img 
+                    src="/satria-logo.jpeg" 
+                    alt="SATRIA Logo" 
+                    className="w-16 h-16 object-contain rounded-md bg-white/5 p-2"
+                  />
+                  <div>
+                    <h2 className="text-2xl font-bold text-foreground">SATRIA</h2>
+                    <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Intelligence</p>
+                  </div>
                 </div>
                 <NavLinks mobile={true} />
               </SheetContent>
             </Sheet>
 
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center">
-                <Shield className="h-4 w-4 text-primary" />
-              </div>
+              <img 
+                src="/satria-logo.jpeg" 
+                alt="SATRIA Logo" 
+                className="w-12 h-12 sm:w-14 sm:h-14 object-contain rounded-md bg-white/5 p-1.5"
+              />
               <div>
                 <h1 className="text-lg sm:text-xl font-bold tracking-tight text-foreground">
                   SATRIA
                 </h1>
                 <p className="hidden sm:block text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                  Financial Intelligence
+                  Anti Money Laundering
                 </p>
               </div>
             </div>
