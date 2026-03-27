@@ -1,0 +1,98 @@
+{
+  "system_name": "SATRIA",
+  "theme": "light",
+  "archetype": "4 (Swiss & High-Contrast)",
+  "emotional_tone": "Authoritative, Objective, Rigid, Functional, Truth-Seeking",
+  "design_philosophy": "A cyber-financial intelligence fusion center must prioritize data density and uncompromising clarity. We reject soft SaaS aesthetics in favor of 'Technical Brutalism'. The UI acts as a literal grid—a structural blueprint of truth—using stark contrasts to highlight anomalies in money laundering and terrorism financing.",
+  "typography": {
+    "heading_font": "Cabinet Grotesk",
+    "body_font": "IBM Plex Sans",
+    "mono_font": "JetBrains Mono",
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl tracking-tight font-black uppercase",
+      "h2": "text-2xl sm:text-3xl tracking-tight font-bold",
+      "h3": "text-xl font-bold",
+      "h4": "text-lg font-semibold",
+      "body": "text-sm sm:text-base leading-relaxed font-medium",
+      "mono_data": "font-mono text-sm tracking-tight text-black",
+      "overline": "text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground"
+    }
+  },
+  "colors": {
+    "background": "#FFFFFF",
+    "foreground": "#0A0A0A",
+    "surface": "#F7F7F7",
+    "surface_hover": "#EAEAEA",
+    "primary": "#002FA7",
+    "primary_foreground": "#FFFFFF",
+    "secondary": "#0A0A0A",
+    "secondary_foreground": "#FFFFFF",
+    "status": {
+      "critical_tppt": "#E63946",
+      "suspicious_tppu": "#FFB703",
+      "secure": "#2A9D8F"
+    },
+    "border": "#E5E5E5",
+    "border_hard": "#0A0A0A",
+    "muted": "#737373"
+  },
+  "layout_and_spacing": {
+    "strategy": "The 'Control Room' Grid Protocol (Mode B).",
+    "grid_system": "Strict border-collapse style layout. Widgets have no gaps (gap-0) but are separated by hard 1px borders to maximize screen real estate and create a 'terminal' feel.",
+    "border_radius": "rounded-none. Absolutely zero border radius. Sharp, 90-degree corners enforce rigidity and precision.",
+    "container_padding": "Internal widget padding must be generous (p-6 or p-8) to prevent text collision, despite tight external grid packing.",
+    "optical_alignment": "Left-align all data blocks. Center alignment is banned unless used for isolated hero text."
+  },
+  "surface_strategies": {
+    "widgets_and_cards": "Grid Borders (The 'Technical' Look). Use pure HTML + Tailwind pure CSS grid. Flat white backgrounds, 1px solid border (#E5E5E5 or #0A0A0A for focus). No shadows.",
+    "header_nav": "Solid Stark White (#FFFFFF) with a hard 1px black bottom border. Functional left sidebar or top nav, avoiding hamburger menus on desktop.",
+    "modals_dialogs": "Flat white background, harsh 2px black border, solid black shadow offset (e.g., 4px 4px 0px #0A0A0A) for a neo-brutalist pop.",
+    "glassmorphism": "Strictly BANNED for this health/finance-adjacent intelligence app. Solid colors only to prevent data refraction."
+  },
+  "components": {
+    "buttons": "Flat, sharp edges. Primary uses International Klein Blue (bg-[#002FA7] text-white). Hover state: invert to white background with blue text and blue border.",
+    "inputs": "Shadcn defaults completely stripped of rounded corners (rounded-none). 1px border-gray-300. Focus state MUST have a hard 2px black ring.",
+    "tables": "High density. Use JetBrains Mono for ALL numeric columns, IDs, and crypto wallet hashes. 1px black bottom borders for rows. No striped backgrounds.",
+    "charts_visualizations": "Use Recharts with sharp line configurations (type='linear', not 'monotone'). Entity Relationship Graphs (GNN) should use D3 or React Force Graph with stark angular connections.",
+    "badges": "Square badges (rounded-none). High contrast. e.g., Critical uses red background with stark white text."
+  },
+  "motion_and_interactions": {
+    "philosophy": "Instantaneous. Animation should be minimal to reflect a high-performance terminal.",
+    "hover_states": "Crisp background color changes (transition-none or extremely fast duration-75).",
+    "accessibility": "Always explicitly set text color on hover. Ensure focus rings (focus:ring-2 focus:ring-black) are prominent for keyboard navigation."
+  },
+  "media_and_icons": {
+    "icon_library": "@phosphor-icons/react",
+    "icon_style": "Regular weight, technical, geometric.",
+    "image_urls": [
+      {
+        "category": "Login Background / System Hero",
+        "url": "https://images.pexels.com/photos/3137073/pexels-photo-3137073.jpeg",
+        "description": "Black and white abstract geometric lines acting as a structural, intelligence-agency background."
+      },
+      {
+        "category": "Map Base for Intelligence Fusion",
+        "url": "https://images.pexels.com/photos/4079878/pexels-photo-4079878.jpeg",
+        "description": "Abstract vintage map texture, used as a subtle overlay for geographic entity tracking."
+      },
+      {
+        "category": "User Avatar - Analyst",
+        "url": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "description": "Professional female analyst avatar."
+      },
+      {
+        "category": "User Avatar - Auditor",
+        "url": "https://images.unsplash.com/photo-1560250097-0b93528c311a?crop=entropy&cs=srgb&fm=jpg&q=85",
+        "description": "Professional male auditor avatar."
+      }
+    ]
+  },
+  "technical_instructions_to_main_agent": [
+    "Install custom fonts via Google Fonts: Cabinet Grotesk (if available via fontshare, otherwise Chivo), IBM Plex Sans, and JetBrains Mono.",
+    "Run `yarn add @phosphor-icons/react` for the icon system.",
+    "Strip ALL rounded corners from Shadcn components by setting `--radius: 0rem;` in `index.css`.",
+    "Construct the main dashboard layout using CSS Grid with a 1px gap colored via a background to simulate a continuous grid line (e.g., `className='grid gap-px bg-border'`).",
+    "Assign `data-testid` attributes to all actionable elements (e.g., `data-testid='export-ltkm-btn'`, `data-testid='risk-score-widget'`).",
+    "Do NOT use drop-shadows on dashboard cards. Rely strictly on typography scale and 1px borders to establish hierarchy."
+  ]
+}
