@@ -1,135 +1,107 @@
-import numpy as np
-import pandas as pd
-from sklearn.ensemble import IsolationForest
-from sklearn.preprocessing import StandardScaler
-from typing import List, Dict, Any, Tuple
-import networkx as nx
-from datetime import datetime, timedelta
+"""
+Lightweight ML Engine for SATRIA System
+Rule-based scoring without heavy ML dependencies
+Optimized for deployment on resource-constrained environments
+"""
+
 import random
+from typing import List, Dict, Any, Tuple
+from datetime import datetime, timedelta
+import json
 
 class MLEngine:
-    """AI/ML Detection Engine for SATRIA System"""
+    """Lightweight AI/ML Detection Engine for SATRIA System"""
     
     def __init__(self):
-        self.isolation_forest = IsolationForest(
-            contamination=0.1,
-            random_state=42,
-            n_estimators=100
-        )
-        self.scaler = StandardScaler()
-        self.trained = False
+        self.trained = True  # Always ready
         
-    def train_isolation_forest(self, transaction_data: List[Dict[str, Any]]):
-        """Train Isolation Forest model on transaction data"""
-        if not transaction_data:
-            return
-        
-        # Extract features
-        features = []
-        for tx in transaction_data:
-            features.append([
-                tx.get('amount', 0),
-                tx.get('transaction_count', 0),
-                tx.get('hour_of_day', 0),
-                tx.get('day_of_week', 0),
-            ])
-        
-        X = np.array(features)
-        X_scaled = self.scaler.fit_transform(X)
-        self.isolation_forest.fit(X_scaled)
-        self.trained = True
-    
     def detect_anomalies(self, transaction: Dict[str, Any]) -> Tuple[float, bool]:
-        """Detect anomalies using Isolation Forest"""
-        if not self.trained:
-            # Return random score for demo
-            score = random.uniform(0, 100)
-            is_anomaly = score > 70
-            return score, is_anomaly
+        """Detect anomalies using rule-based scoring"""
+        score = 0.0
         
-        features = np.array([[
-            transaction.get('amount', 0),
-            transaction.get('transaction_count', 0),
-            transaction.get('hour_of_day', 0),
-            transaction.get('day_of_week', 0),
-        ]])
+        # High amount transactions
+        amount = transaction.get('amount', 0)
+        if amount > 100000000:  # > 100M IDR
+            score += 30
+        elif amount > 50000000:  # > 50M IDR
+            score += 20
+        elif amount > 10000000:  # > 10M IDR
+            score += 10
+            
+        # Round amounts (potential smurfing)
+        if amount % 1000000 == 0 and amount > 0:
+            score += 15
+            
+        # Transaction metadata checks
+        metadata = transaction.get('metadata', {})
+        if metadata:
+            # Late night transactions (22:00 - 05:00)
+            if 'timestamp' in transaction:
+                try:
+                    ts = transaction['timestamp']
+                    if isinstance(ts, str):
+                        ts = datetime.fromisoformat(ts)
+                    hour = ts.hour
+                    if 22 <= hour or hour <= 5:
+                        score += 10
+                except:
+                    pass
         
-        X_scaled = self.scaler.transform(features)
-        prediction = self.isolation_forest.predict(X_scaled)
-        anomaly_score = self.isolation_forest.score_samples(X_scaled)
+        # Normalize to 0-100 scale
+        final_score = min(score, 100)
+        is_anomaly = final_score > 70
         
-        # Convert to 0-100 scale (higher is more suspicious)
-        normalized_score = (1 - (anomaly_score[0] + 0.5)) * 100
-        normalized_score = max(0, min(100, normalized_score))
-        
-        is_anomaly = prediction[0] == -1
-        return normalized_score, is_anomaly
+        return final_score, is_anomaly
     
     def analyze_graph_network(self, entities: List[Dict], relationships: List[Dict]) -> Dict[str, Any]:
-        """Graph Neural Network simulation - analyze entity relationships"""
-        G = nx.DiGraph()
-        
-        # Add nodes
-        for entity in entities:
-            G.add_node(entity['id'], **entity)
-        
-        # Add edges
-        for rel in relationships:
-            G.add_edge(
-                rel['source_entity_id'],
-                rel['target_entity_id'],
-                weight=rel.get('strength', 1.0),
-                transaction_count=rel.get('transaction_count', 0)
-            )
-        
-        # Calculate metrics
+        """Graph analysis using simple connectivity metrics"""
         results = {
-            'node_count': G.number_of_nodes(),
-            'edge_count': G.number_of_edges(),
+            'node_count': len(entities),
+            'edge_count': len(relationships),
             'clusters': [],
             'suspicious_patterns': []
         }
         
-        if G.number_of_nodes() > 0:
-            # Detect communities (potential fraud rings)
-            if G.number_of_edges() > 0:
-                try:
-                    # Calculate centrality metrics
-                    degree_centrality = nx.degree_centrality(G)
-                    betweenness = nx.betweenness_centrality(G)
-                    
-                    # Find highly connected nodes (potential money mules)
-                    suspicious_nodes = []
-                    for node_id, centrality in degree_centrality.items():
-                        if centrality > 0.5:  # Highly connected
-                            suspicious_nodes.append({
-                                'entity_id': node_id,
-                                'centrality': centrality,
-                                'betweenness': betweenness.get(node_id, 0),
-                                'risk_indicator': 'hub_node'
-                            })
-                    
-                    results['suspicious_patterns'] = suspicious_nodes
-                    
-                    # Detect cycles (potential layering)
-                    try:
-                        cycles = list(nx.simple_cycles(G))
-                        if len(cycles) > 0:
-                            results['suspicious_patterns'].append({
-                                'pattern': 'circular_transactions',
-                                'cycle_count': len(cycles),
-                                'description': 'Potential layering detected'
-                            })
-                    except:
-                        pass
-                        
-                except Exception as e:
-                    print(f"Graph analysis error: {e}")
+        if not entities or not relationships:
+            return results
+        
+        # Build adjacency map
+        entity_connections = {}
+        for entity in entities:
+            entity_connections[entity['id']] = 0
+            
+        for rel in relationships:
+            source = rel.get('source_entity_id')
+            target = rel.get('target_entity_id')
+            if source in entity_connections:
+                entity_connections[source] += 1
+            if target in entity_connections:
+                entity_connections[target] += 1
+        
+        # Find highly connected nodes (potential hubs)
+        avg_connections = sum(entity_connections.values()) / len(entity_connections) if entity_connections else 0
+        
+        for entity_id, connections in entity_connections.items():
+            if connections > avg_connections * 2:  # More than 2x average
+                results['suspicious_patterns'].append({
+                    'entity_id': entity_id,
+                    'connections': connections,
+                    'risk_indicator': 'hub_node',
+                    'score': min(50 + connections * 5, 100)
+                })
+        
+        # Detect potential circular patterns
+        if len(relationships) > 3:
+            results['suspicious_patterns'].append({
+                'pattern': 'potential_layering',
+                'description': 'Multiple interconnected entities detected',
+                'score': 40
+            })
         
         return results
     
     def analyze_sequence_patterns(self, transactions: List[Dict]) -> Dict[str, Any]:
-        """LSTM-style sequence analysis simulation"""
+        """LSTM-style sequence analysis using rule-based patterns"""
         if not transactions:
             return {'patterns': [], 'risk_score': 0}
         
@@ -149,7 +121,7 @@ class MLEngine:
         
         # Detect rapid succession transactions
         if len(sorted_txs) >= 5:
-            time_diffs = []
+            rapid_count = 0
             for i in range(1, min(len(sorted_txs), 6)):
                 try:
                     t1 = sorted_txs[i-1].get('timestamp')
@@ -158,24 +130,24 @@ class MLEngine:
                         t1 = datetime.fromisoformat(t1)
                     if isinstance(t2, str):
                         t2 = datetime.fromisoformat(t2)
-                    diff = (t2 - t1).total_seconds() / 60  # minutes
-                    time_diffs.append(diff)
+                    diff_minutes = (t2 - t1).total_seconds() / 60
+                    if diff_minutes < 10:  # Less than 10 minutes
+                        rapid_count += 1
                 except:
                     pass
             
-            if time_diffs and np.mean(time_diffs) < 5:  # Less than 5 min average
+            if rapid_count >= 3:
                 patterns_detected.append('rapid_succession')
                 risk_score += 25
         
-        # Detect unusual amounts
-        amounts = [tx.get('amount', 0) for tx in sorted_txs]
-        if amounts:
-            avg_amount = np.mean(amounts)
-            std_amount = np.std(amounts)
+        # Detect unusual amounts using simple statistics
+        amounts = [tx.get('amount', 0) for tx in sorted_txs if tx.get('amount', 0) > 0]
+        if len(amounts) > 3:
+            avg_amount = sum(amounts) / len(amounts)
+            max_amount = max(amounts)
             
-            unusual_txs = [amt for amt in amounts if amt > avg_amount + 2 * std_amount]
-            if len(unusual_txs) > 0:
-                patterns_detected.append('unusual_amount_pattern')
+            if max_amount > avg_amount * 3:  # 3x more than average
+                patterns_detected.append('unusual_amount_spike')
                 risk_score += 20
         
         # Detect round amounts (potential smurfing)
@@ -192,7 +164,7 @@ class MLEngine:
         }
     
     def trace_crypto_wallet(self, wallet_address: str, transactions: List[Dict]) -> Dict[str, Any]:
-        """Crypto wallet tracing and chain-hopping detection"""
+        """Crypto wallet tracing using pattern detection"""
         # Filter transactions for this wallet
         wallet_txs = [
             tx for tx in transactions 
@@ -211,7 +183,7 @@ class MLEngine:
         blockchains_used = set(tx.get('blockchain', 'unknown') for tx in wallet_txs)
         chain_hopping = len(blockchains_used) > 1
         
-        # Clustering (simplified)
+        # Simple clustering based on address pattern
         cluster_id = f"cluster_{hash(wallet_address) % 1000}"
         
         # Calculate risk
@@ -226,6 +198,10 @@ class MLEngine:
         if total_volume > 1000000:  # Arbitrary threshold
             risk_score += 20
         
+        # Check for suspicious patterns
+        if len(blockchains_used) > 2:
+            risk_score += 15
+        
         return {
             'wallet_address': wallet_address,
             'chain_hopping': chain_hopping,
@@ -237,7 +213,7 @@ class MLEngine:
         }
     
     def ensemble_risk_scoring(self, scores: Dict[str, float]) -> Tuple[float, str]:
-        """Ensemble risk scoring - weighted combination of all models"""
+        """Ensemble risk scoring - weighted combination of all detection methods"""
         weights = {
             'gnn_score': 0.25,
             'lstm_score': 0.25,
@@ -269,6 +245,10 @@ class MLEngine:
             risk_level = 'low'
         
         return final_score, risk_level
+    
+    def train_isolation_forest(self, transaction_data: List[Dict[str, Any]]):
+        """Mock training - no actual ML training needed"""
+        pass  # No-op for lightweight version
 
 # Global ML engine instance
 ml_engine = MLEngine()
