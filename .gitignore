@@ -84,3 +84,7 @@ android-sdk/-e
 # Environment variables - COMMENTED OUT FOR DEPLOYMENT
 # *.env
 # *.env.*
+-e 
+# Environment files
+*.env
+*.env.*
